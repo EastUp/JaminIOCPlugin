@@ -10,6 +10,8 @@
    
 ## 使用方法
 
+　　IOC的核心代码请下载工程，自行引入，[链接在此](https://github.com/EastUp/ConnotationJokes/tree/master/baselibrary/src/main/java/com/east/baselibrary/ioc)
+
 　　plugin中选择本地的插件jar包
 
 ![](./使用方法.jpg)
