@@ -14,6 +14,7 @@ public class IdBean extends JPanel {
     private JLabel mIdJLabel;
     private JCheckBox mClickCheckBox;
     private JCheckBox mCheckNetCheckBox;
+    private JCheckBox mThrottleClickCheckBox;
     private JTextField mFieldJTextField;
 
     /**
@@ -43,25 +44,6 @@ public class IdBean extends JPanel {
     }
 
     /**
-     * mClickCheckBox接口
-     */
-    public interface ClickActionListener {
-        void setClick(JCheckBox clickCheckBox);
-    }
-
-    private ClickActionListener mClickListener;
-
-    private ClickActionListener mCheckNetClickListener;
-
-    public void setClickActionListener(ClickActionListener clickListener) {
-        mClickListener = clickListener;
-    }
-
-    public void setCheckNetClickActionListener(ClickActionListener clickListener) {
-        mCheckNetClickListener = clickListener;
-    }
-
-    /**
      * 构造方法
      *
      * @param layout         布局
@@ -72,7 +54,8 @@ public class IdBean extends JPanel {
      * @param jTextField     字段名
      */
     public IdBean(LayoutManager layout, EmptyBorder emptyBorder,
-                  JCheckBox jCheckBox, JLabel jLabelId, JCheckBox jCheckBoxClick, JCheckBox jCheckBoxCheckNet, JTextField jTextField,
+                  JCheckBox jCheckBox, JLabel jLabelId, JCheckBox jCheckBoxClick, JCheckBox jCheckBoxCheckNet,
+                  JCheckBox jCheckBoxThrottleClick,JTextField jTextField,
                   Element element) {
         super(layout);
         initLayout(layout, emptyBorder);
@@ -80,6 +63,7 @@ public class IdBean extends JPanel {
         mIdJLabel = jLabelId;
         mClickCheckBox = jCheckBoxClick;
         mCheckNetCheckBox = jCheckBoxCheckNet;
+        mThrottleClickCheckBox = jCheckBoxThrottleClick;
         mFieldJTextField = jTextField;
         initComponent(element);
         addComponent();
@@ -93,6 +77,7 @@ public class IdBean extends JPanel {
         this.add(mIdJLabel);
         this.add(mClickCheckBox);
         this.add(mCheckNetCheckBox);
+        this.add(mThrottleClickCheckBox);
         this.add(mFieldJTextField);
     }
 
@@ -124,25 +109,28 @@ public class IdBean extends JPanel {
         });
         // 监听
         mClickCheckBox.addActionListener(e -> {
-            if (mClickListener != null) {
-                mClickListener.setClick(mClickCheckBox);
-            }
+            element.setIsCreateClickMethod(mClickCheckBox.isSelected());
 
-            //如果 Click没有选中的话，checkNet也没必要选中
+            //如果 Click没有选中的话，checkNet和throttleClick也没必要选中
             if(!mClickCheckBox.isSelected()){
                 mCheckNetCheckBox.setSelected(false);
                 mCheckNetCheckBox.setEnabled(false);
+                mThrottleClickCheckBox.setSelected(false);
+                mThrottleClickCheckBox.setEnabled(false);
                 element.setCreateCheckNetAnnotation(false);
             }else{
                 mCheckNetCheckBox.setEnabled(true);
+                mThrottleClickCheckBox.setEnabled(true);
             }
         });
 
         //监听
         mCheckNetCheckBox.addActionListener(actionEvent -> {
-            if(mCheckNetClickListener != null){
-                mCheckNetClickListener.setClick(mCheckNetCheckBox);
-            }
+            element.setCreateCheckNetAnnotation(mCheckNetCheckBox.isSelected());
+        });
+
+        mThrottleClickCheckBox.addActionListener(actionEvent -> {
+            element.setCreateThrottleClickAnnotation(mThrottleClickCheckBox.isSelected());
         });
 
         // 监听

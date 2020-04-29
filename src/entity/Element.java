@@ -25,6 +25,8 @@ public class Element {
     private boolean isCreateClickMethod = false;
     // 是否CheckNet
     private boolean isCreateCheckNetAnnotation = false;
+    // 是否ThrottleClick 限制了点击的间隔
+    private boolean isCreateThrottleClickAnnotation = false;
 
     /**
      * 构造函数
@@ -111,6 +113,14 @@ public class Element {
 
     public void setCreateCheckNetAnnotation(boolean createCheckNetAnnotation) {
         isCreateCheckNetAnnotation = createCheckNetAnnotation;
+    }
+
+    public boolean isCreateThrottleClickAnnotation() {
+        return isCreateThrottleClickAnnotation;
+    }
+
+    public void setCreateThrottleClickAnnotation(boolean createThrottleClickAnnotation) {
+        isCreateThrottleClickAnnotation = createThrottleClickAnnotation;
     }
 
     /**

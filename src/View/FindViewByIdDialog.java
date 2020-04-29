@@ -36,6 +36,7 @@ public class FindViewByIdDialog extends JFrame implements ActionListener, IdBean
     private JLabel mTitleId = new JLabel("ViewId");
     private JLabel mTitleClick = new JLabel("BindClick");
     private JLabel mTitleCheckNet = new JLabel("CheckNet");
+    private JLabel mTitleThrottleClick= new JLabel("ThrottleClick");
     private JLabel mTitleField = new JLabel("ViewFiled");
 
     // 内容JPanel
@@ -115,12 +116,14 @@ public class FindViewByIdDialog extends JFrame implements ActionListener, IdBean
         mTitleId.setHorizontalAlignment(JLabel.LEFT);
         mTitleClick.setHorizontalAlignment(JLabel.LEFT);
         mTitleCheckNet.setHorizontalAlignment(JLabel.LEFT);
+        mTitleThrottleClick.setHorizontalAlignment(JLabel.LEFT);
         mTitleField.setHorizontalAlignment(JLabel.LEFT);
         // 添加到JPanel
         mPanelTitle.add(mCheckAll);
         mPanelTitle.add(mTitleId);
         mPanelTitle.add(mTitleClick);
         mPanelTitle.add(mTitleCheckNet);
+        mPanelTitle.add(mTitleThrottleClick);
         mPanelTitle.add(mTitleField);
         mPanelTitle.setSize(720, 30);
         // 添加到JFrame
@@ -156,12 +159,11 @@ public class FindViewByIdDialog extends JFrame implements ActionListener, IdBean
                     new JLabel(mElement.getId()),
                     new JCheckBox(),
                     new JCheckBox(),
+                    new JCheckBox(),
                     new JTextField(mElement.getFieldName()),
                     mElement);
             // 监听
             itemJPanel.setEnableActionListener(this);
-            itemJPanel.setClickActionListener(clickCheckBox -> mElement.setIsCreateClickMethod(clickCheckBox.isSelected()));
-            itemJPanel.setCheckNetClickActionListener(checkNetCheckBox -> mElement.setCreateCheckNetAnnotation(checkNetCheckBox.isSelected()));
             itemJPanel.setFieldFocusListener(fieldJTextField -> mElement.setFieldName(fieldJTextField.getText()));
             mContentJPanel.add(itemJPanel);
             mContentConstraints.fill = GridBagConstraints.HORIZONTAL;

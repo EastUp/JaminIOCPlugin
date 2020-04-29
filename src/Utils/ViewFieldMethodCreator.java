@@ -111,11 +111,11 @@ public class ViewFieldMethodCreator extends Simple {
      */
     private void generateOnClickMethod() {
 
-        boolean noCheckNet = judgeNoCheckNet();
-        boolean allCheckNet = judgeAllCheckNet();
+        boolean noCheckNetAndThrottleClick = judgeNoCheckNetAndThrottleClick();
+        boolean allCheckNetAndThrottleClick = judgeAllCheckNetAndThrottleClick();
 
         //可以只创建一个方法
-        if (noCheckNet || allCheckNet) {
+        if (noCheckNetAndThrottleClick || allCheckNetAndThrottleClick) {
             for (Element element : mElements) {
                 // 可以使用并且可以点击
                 if (element.isCreateClickMethod()) {
@@ -152,9 +152,14 @@ public class ViewFieldMethodCreator extends Simple {
     /**
      * 是否全部选中CheckNet
      */
-    private boolean judgeAllCheckNet() {
+    private boolean judgeAllCheckNetAndThrottleClick() {
         for (Element element : mElements) {
             if (!element.isCreateCheckNetAnnotation()) {
+                return false;
+            }
+        }
+        for (Element element : mElements) {
+            if (!element.isCreateThrottleClickAnnotation()) {
                 return false;
             }
         }
@@ -164,9 +169,15 @@ public class ViewFieldMethodCreator extends Simple {
     /**
      * 是否全部没有选中CheckNet
      */
-    private boolean judgeNoCheckNet() {
+    private boolean judgeNoCheckNetAndThrottleClick() {
         for (Element element : mElements) {
             if (element.isCreateCheckNetAnnotation()) {
+                return false;
+            }
+        }
+
+        for (Element element : mElements) {
+            if (element.isCreateThrottleClickAnnotation()) {
                 return false;
             }
         }
@@ -177,16 +188,21 @@ public class ViewFieldMethodCreator extends Simple {
     /**
      * 创建一个点击事件
      *
-     * @param oneClickMethod 只创建一个点击事件方法
+     * @param oneClickMethod true 代表只创建一个点击事件方法，false代表参加很多个
      */
     private void createClickMethod(String methodName, Element element, boolean oneClickMethod) {
         // 拼接方法的字符串
         StringBuilder methodBuilder = new StringBuilder();
         if (element.isCreateCheckNetAnnotation())
             methodBuilder.append("@CheckNet\n");
-        if (!oneClickMethod)
+        if (element.isCreateThrottleClickAnnotation())
+            methodBuilder.append("@ThrottleClick\n");
+        if (!oneClickMethod){
             methodBuilder.append("@BindClick(" + element.getFullID() + ")\n");
-        else {
+            //        methodBuilder.append("private void " + methodName + "(" + element.getName() + " " + getClickMethodName(element) + "){");
+            methodBuilder.append("private void " + methodName + "(View view){");
+            methodBuilder.append("\n}");
+        } else {
             List<String> idList = new ArrayList<>();
             for (Element element1 : mElements) {
                 if (element1.isCreateClickMethod())
@@ -194,14 +210,28 @@ public class ViewFieldMethodCreator extends Simple {
             }
             if(idList.size() <= 1){
                 methodBuilder.append("@BindClick(" + TextUtils.join(",",idList.toArray()) + ")\n");
+                methodBuilder.append("private void " + methodName + "(View view){");
+                methodBuilder.append("\n}");
             }else{
                 methodBuilder.append("@BindClick({" + TextUtils.join(",",idList.toArray()) + "})\n");
+                methodBuilder.append("private void " + methodName + "(View view){");
+                methodBuilder.append("   switch (view.getId()){\n");
+                for (String id : idList) {
+                    methodBuilder.append(
+                            "       case "+id+":\n\n"
+                            +"          break;"
+                    );
+                }
+                methodBuilder.append(
+                        "       default:\n"
+                        +"          break;"
+                );
+                methodBuilder.append("  \n}");
+                methodBuilder.append("\n}");
             }
-
         }
-//        methodBuilder.append("private void " + methodName + "(" + element.getName() + " " + getClickMethodName(element) + "){");
-        methodBuilder.append("private void " + methodName + "(View view){");
-        methodBuilder.append("\n}");
+
+
         // 创建OnClick方法
         mClass.add(mFactory.createMethodFromText(methodBuilder.toString(), mClass));
     }
