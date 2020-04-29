@@ -1,0 +1,41 @@
+<idea-plugin>
+  <id>com.east.ioc</id>
+  <name>JaminIOC</name>
+  <version>1.0</version>
+  <vendor email="eastrisewm@163.com" url="https://github.com/eastup">PersonalCreate</vendor>
+
+  <description><![CDATA[
+      可输入布局字段，可选中布局文件字段，自动生成有id控件相应的注解代码。<br>
+      这是通过反射去查找的View
+    ]]></description>
+
+  <change-notes><![CDATA[
+      1.0 支持Activity，Fragment，View <br/>
+      添加可选生成的字段，可编辑变量名，可选择是否LayoutInflater类型，<br/>
+      使用方法 code 中的第一项。或者 code -> Generate...
+    ]]>
+  </change-notes>
+
+  <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
+  <idea-version since-build="173.0"/>
+
+  <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+       on how to target different products -->
+  <depends>com.intellij.modules.platform</depends>
+
+  <extensions defaultExtensionNs="com.intellij">
+    <!-- Add your extensions here -->
+  </extensions>
+
+  <actions>
+    <!-- Add your actions here -->
+    <action id="JaminIOCAction" class="action.JaminIOC" text="JaminIOC"
+            icon="/jaminIOC.png"
+            description="JaminIOCAction">
+      <add-to-group group-id="CodeMenu" anchor="first"/>
+      <add-to-group group-id="GenerateGroup" anchor="first"/>
+      <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt shift ."/>
+    </action>
+  </actions>
+
+</idea-plugin>
