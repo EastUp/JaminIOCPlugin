@@ -1,7 +1,7 @@
 <idea-plugin>
   <id>com.east.ioc</id>
   <name>JaminIOC</name>
-  <version>1.0</version>
+  <version>1.1</version>
   <vendor email="eastrisewm@163.com" url="https://github.com/eastup">PersonalCreate</vendor>
 
   <description><![CDATA[
@@ -10,7 +10,8 @@
     ]]></description>
 
   <change-notes><![CDATA[
-      1.0 支持Activity，Fragment，View <br/>
+      1.1 新增ThrottleClick注解用于限制快速点击的多次响应问题 <br/>
+      支持Activity，Fragment，View <br/>
       添加可选生成的字段，可编辑变量名，可选择是否LayoutInflater类型，<br/>
       使用方法 code 中的第一项。或者 code -> Generate...
     ]]>
