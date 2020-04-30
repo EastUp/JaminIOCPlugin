@@ -92,6 +92,12 @@ public class JaminIOC extends AnAction {
             // 获取layout文件的字符串
             int startPosition = lineContent.indexOf(layoutMatching) + layoutMatching.length();
             int endPosition = lineContent.indexOf(")", startPosition);
+            if(endPosition == -1){  //return R.layout.activity_main;
+                endPosition = lineContent.indexOf(";", startPosition);
+            }
+            if(endPosition == -1){//return R.layout.activity_main
+                endPosition =  lineContent.length() - 1;
+            }
             String layoutStr = lineContent.substring(startPosition, endPosition);
             // 可能是另外一种情况 View.inflate
             if (layoutStr.contains(",")) {
