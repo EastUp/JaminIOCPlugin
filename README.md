@@ -10,7 +10,8 @@
    
 ## 使用方法
 
-　　IOC的核心代码请下载工程，自行引入，[链接在此](https://github.com/EastUp/JaminIOC/tree/master/jaminiocsdk/src/main/java/com/east/jaminiocsdk/ioc)
+　　IOC的核心代码请下载工程，自行引入，[链接在此](https://github.com/EastUp/JaminIOC/tree/master/jaminioc/src/main/java/com/east/jaminioc/ioc)
+　　
 
 　　plugin中选择本地的插件jar包
 
